@@ -35,4 +35,5 @@ This repo starts as a protocol and implementation-plan scaffold. The next step i
 ## Documents
 
 - [PROTOCOL.md](./PROTOCOL.md)
+- [API_CONTRACT.md](./API_CONTRACT.md)
 - [ROADMAP.md](./ROADMAP.md)
