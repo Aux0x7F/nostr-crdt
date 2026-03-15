@@ -1,0 +1,11 @@
+{
+  "name": "nostr-crdt",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Browser-first CRDT transport over Nostr",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/index.js"
+  }
+}
