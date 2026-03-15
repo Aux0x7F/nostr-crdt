@@ -1,12 +1,12 @@
 # Roadmap
 
-## First implementation
+## Completed
 
-- define exact event codec for Yjs update and checkpoint messages
-- implement minimal browser-first transport package
-- add in-memory relay test harness
-- support signer validation hook from host applications
-- support checkpoint replay plus tail updates
+- exact event codec for Yjs update and checkpoint messages
+- minimal browser-first transport package
+- in-memory relay test harness
+- signer validation hook from host applications
+- checkpoint replay plus tail updates
 
 ## Next
 
@@ -14,6 +14,7 @@
 - document compaction heuristics
 - optional awareness channel
 - app examples that do not pull in a full framework by default
+- first `nostr-site` integration against one collaborative unit type
 
 ## Later
 

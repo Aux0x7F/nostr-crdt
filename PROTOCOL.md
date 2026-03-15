@@ -58,11 +58,11 @@ The exact Nostr kind may be application-configurable. The transport must support
 Recommended tags:
 
 - `["t", "crdt"]`
-- `["app", "<namespace>"]`
-- `["doc", "<document-id>"]`
-- `["msg", "update" | "checkpoint" | "checkpoint-request"]`
-- `["codec", "yjs-update-v1"]`
-- `["checkpoint", "<checkpoint-id>"]` when applicable
+- `["n", "<namespace>"]`
+- `["d", "<room-id>"]`
+- `["m", "update" | "checkpoint" | "checkpoint-request"]`
+- `["c", "yjs-update-v1"]`
+- `["x", "<checkpoint-id>"]` when applicable
 
 The event `pubkey` is the signer identity. The transport does not decide whether that signer is trusted; the host application does.
 
