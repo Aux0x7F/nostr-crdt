@@ -21,6 +21,7 @@ The first implementation target is Yjs, but the API should be shaped so the repo
 - buffered update publishing
 - checkpoint publishing and replay helpers
 - host hooks for signer acceptance policy
+- a transport adapter contract that does not require a specific Nostr client library
 
 `nostr-crdt` should not provide:
 
@@ -29,19 +30,22 @@ The first implementation target is Yjs, but the API should be shaped so the repo
 - moderation workflow
 - bakedown or GitHub PR logic
 
-## Expected primitives
+## First implementation slice
 
-The library should eventually expose small primitives shaped roughly like:
+The current implementation exposes:
 
 - `createRoomId(namespace, documentId)`
-- `encodeUpdateMessage(...)`
-- `decodeMessage(...)`
-- `subscribeDocument(...)`
-- `publishUpdate(...)`
-- `requestCheckpoint(...)`
-- `applyReplay(...)`
+- `createDocumentFilters(...)`
+- `createUnsignedEvent(...)`
+- `decodeEvent(...)`
+- `createYjsSync(...)`
 
-These names are placeholders, not frozen API.
+The higher-level sync object is responsible for:
+
+- replay
+- buffered update publishing
+- checkpoint publishing
+- checkpoint requests
 
 ## Host responsibilities
 
@@ -75,3 +79,15 @@ Required test shapes:
 - two-writer convergence
 - checkpoint plus tail replay
 - ignored update from a host-rejected signer
+
+## Transport adapter
+
+The first implementation should accept a small adapter rather than importing a full Nostr client stack.
+
+Expected adapter shape:
+
+- `query(filters) -> Promise<event[]>`
+- `subscribe(filters, onEvent) -> unsubscribe | Promise<unsubscribe>`
+- `publish(event) -> Promise<event>`
+
+This keeps the core library browser-first and easy to test.

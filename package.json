@@ -6,6 +6,10 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "check": "node --check src/index.js"
+    "check": "node --check src/index.js && node --check src/codec.js && node --check src/yjs-sync.js && node --check test/helpers/in-memory-transport.js && node --check test/nostr-crdt.test.js",
+    "test": "node --test test/nostr-crdt.test.js"
+  },
+  "dependencies": {
+    "yjs": "13.6.27"
   }
 }

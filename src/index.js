@@ -1,22 +1,19 @@
-/**
- * Docs-first scaffold.
- *
- * The first real implementation should expose:
- * - room identity helpers
- * - event codec helpers
- * - replay helpers
- * - buffered update publishing
- * - checkpoint helpers
- * - host-provided authorization hooks
- */
+export {
+  DEFAULT_EVENT_KIND,
+  PROTOCOL_VERSION,
+  YJS_UPDATE_CODEC,
+  compareEventsAscending,
+  createDocumentFilters,
+  createRoomId,
+  createUnsignedEvent,
+  decodeEvent,
+  fromBase64,
+  normalizeDocumentId,
+  normalizeMessageType,
+  normalizeToken,
+  sortEventsAscending,
+  toBase64,
+  unixNow,
+} from "./codec.js";
 
-export const PROTOCOL_VERSION = 1;
-
-export function describeProtocol() {
-  return {
-    version: PROTOCOL_VERSION,
-    name: "nostr-crdt",
-    focus: "CRDT transport over Nostr",
-    initialTarget: "Yjs",
-  };
-}
+export { createYjsSync, getRemoteOrigin, YjsNostrSync } from "./yjs-sync.js";

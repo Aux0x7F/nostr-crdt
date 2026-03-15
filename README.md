@@ -32,6 +32,42 @@ This repo starts as a protocol and implementation-plan scaffold. The next step i
 - optional checkpoint messages
 - in-memory transport tests
 
+The first implementation slice is now present:
+
+- Yjs document sync with buffered update publishing
+- checkpoint plus tail replay
+- host-provided acceptance hook
+- in-memory transport tests
+
+## First API slice
+
+```js
+import * as Y from "yjs";
+import { createRoomId, createYjsSync } from "nostr-crdt";
+
+const doc = new Y.Doc();
+const roomId = createRoomId("true-cost", "page:home");
+
+const sync = createYjsSync({
+  doc,
+  namespace: "true-cost",
+  roomId,
+  transport,
+  signer,
+  acceptEvent(event, decoded) {
+    return trustedAdminSet.has(decoded.event.pubkey);
+  },
+});
+
+await sync.initialize();
+```
+
+The transport adapter is intentionally small:
+
+- `query(filters)`
+- `subscribe(filters, onEvent)`
+- `publish(event)`
+
 ## Documents
 
 - [PROTOCOL.md](./PROTOCOL.md)
