@@ -154,8 +154,6 @@ export function normalizeMessageType(value) {
 function createFilter(kind, namespace, roomId, messageType) {
   return {
     kinds: [Number(kind)],
-    "#t": ["crdt"],
-    "#n": [namespace],
     "#d": [roomId],
     "#m": [normalizeMessageType(messageType)],
   };
