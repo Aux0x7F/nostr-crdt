@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "description": "Browser-first CRDT transport over Nostr",
-  "license": "MIT",
   "type": "module",
   "main": "./src/index.js",
   "exports": {

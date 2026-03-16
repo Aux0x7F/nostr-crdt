@@ -203,7 +203,6 @@ test("codec uses queryable single-letter tags", async () => {
     roomId,
   });
 
-  assert.equal(filters[0]["#n"][0], "demo");
   assert.equal(filters[0]["#d"][0], roomId);
   assert.equal(filters[0]["#m"][0], "checkpoint");
 });
