@@ -54,6 +54,9 @@ const sync = createYjsSync({
   roomId,
   transport,
   signer,
+  verifyEvent(event) {
+    return event.sig === `sig:${event.id}`;
+  },
   acceptEvent(event, decoded) {
     return trustedAdminSet.has(decoded.event.pubkey);
   },
@@ -67,6 +70,11 @@ The transport adapter is intentionally small:
 - `query(filters)`
 - `subscribe(filters, onEvent)`
 - `publish(event)`
+
+Optional host hooks stay explicit:
+
+- `verifyEvent(event)`
+- `acceptEvent(event, decoded)`
 
 ## Documents
 

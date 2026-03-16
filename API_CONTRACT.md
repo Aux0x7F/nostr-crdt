@@ -20,7 +20,7 @@ The first implementation target is Yjs, but the API should be shaped so the repo
 - replay and catch-up helpers
 - buffered update publishing
 - checkpoint publishing and replay helpers
-- host hooks for signer acceptance policy
+- host hooks for signature verification and signer acceptance policy
 - a transport adapter contract that does not require a specific Nostr client library
 
 `nostr-crdt` should not provide:
@@ -53,6 +53,7 @@ The host application must provide:
 
 - relay configuration
 - signer identity and signing
+- signature verification policy for incoming messages
 - acceptance policy for incoming messages
 - document ownership and namespace policy
 
@@ -78,6 +79,7 @@ Required test shapes:
 - one-writer replay
 - two-writer convergence
 - checkpoint plus tail replay
+- ignored update from a signature-verification failure
 - ignored update from a host-rejected signer
 
 ## Transport adapter
