@@ -64,7 +64,7 @@ Recommended tags:
 - `["c", "yjs-update-v1"]`
 - `["x", "<checkpoint-id>"]` when applicable
 
-The event `pubkey` is the signer identity. The transport does not decide whether that signer is trusted; the host application does.
+The event `pubkey` is the signer identity. The host application or adapter must also verify the event signature before the message is considered eligible for replay or live apply.
 
 ## Payload
 
@@ -94,9 +94,9 @@ Notes:
 
 ## Client acceptance rules
 
-The transport layer validates the event shape and verifies the Nostr signature.
+The transport layer validates the event shape. Signature verification and signer acceptance are host-controlled so the library can stay transport-agnostic.
 
-The host application decides whether to apply the update. `nostr-crdt` should expose hooks for host-provided authorization and acceptance policy.
+The host application decides whether to apply the update. `nostr-crdt` should expose hooks for host-provided signature verification, authorization, and acceptance policy.
 
 ## Replay and catch-up
 

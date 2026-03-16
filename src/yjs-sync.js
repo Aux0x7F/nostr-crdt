@@ -22,6 +22,7 @@ export class YjsNostrSync {
     signer,
     kind = DEFAULT_EVENT_KIND,
     bufferMs = 100,
+    verifyEvent = () => true,
     acceptEvent = () => true,
     onCheckpointRequest = null,
   }) {
@@ -43,6 +44,7 @@ export class YjsNostrSync {
     this.transport = transport;
     this.signer = signer;
     this.bufferMs = Math.max(0, Number(bufferMs) || 0);
+    this.verifyEvent = verifyEvent;
     this.acceptEvent = acceptEvent;
     this.onCheckpointRequest = onCheckpointRequest;
 
@@ -174,6 +176,7 @@ export class YjsNostrSync {
   async handleTransportEvent(event) {
     if (this.destroyed) return;
     if (event?.id && this.seenEventIds.has(event.id)) return;
+    if (!(await this.isVerifiedEvent(event))) return;
 
     let decoded;
     try {
@@ -231,6 +234,7 @@ export class YjsNostrSync {
 
     for (const event of ordered) {
       if (event?.id && this.seenEventIds.has(event.id)) continue;
+      if (!(await this.isVerifiedEvent(event))) continue;
 
       let decoded;
       try {
@@ -248,6 +252,14 @@ export class YjsNostrSync {
     }
 
     return accepted;
+  }
+
+  async isVerifiedEvent(event) {
+    return Boolean(
+      await Promise.resolve(
+        typeof this.verifyEvent === "function" ? this.verifyEvent(event) : this.verifyEvent
+      )
+    );
   }
 }
 

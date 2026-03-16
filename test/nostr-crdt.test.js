@@ -178,6 +178,56 @@ test("host rejection prevents unauthorized live update application", async () =>
   viewer.destroy();
 });
 
+test("signature verification rejects invalid replay and live events", async () => {
+  const transport = createInMemoryTransport();
+  const roomId = createRoomId("demo", "page:home");
+  const verifyEvent = (event) => event?.sig === `sig:${event?.id}`;
+
+  const replayEvent = await createTestSigner("alice").sign(
+    createUnsignedEvent({
+      namespace: "demo",
+      roomId,
+      messageType: "update",
+      payloadBytes: Y.encodeStateAsUpdate(createDocWithText("replay should fail")),
+    })
+  );
+  await transport.publish({
+    ...replayEvent,
+    sig: "sig:invalid-replay",
+  });
+
+  const doc = new Y.Doc();
+  const sync = createYjsSync({
+    doc,
+    namespace: "demo",
+    roomId,
+    transport,
+    signer: createTestSigner("viewer"),
+    verifyEvent,
+    bufferMs: 0,
+  });
+
+  await sync.initialize();
+  assert.equal(doc.getText("body").toString(), "");
+
+  const liveEvent = await createTestSigner("alice").sign(
+    createUnsignedEvent({
+      namespace: "demo",
+      roomId,
+      messageType: "update",
+      payloadBytes: Y.encodeStateAsUpdate(createDocWithText("live should fail")),
+    })
+  );
+  await transport.publish({
+    ...liveEvent,
+    sig: "sig:invalid-live",
+  });
+  await tick();
+
+  assert.equal(doc.getText("body").toString(), "");
+  sync.destroy();
+});
+
 test("codec uses queryable single-letter tags", async () => {
   const roomId = createRoomId("demo", "page:home");
   const event = createUnsignedEvent({
@@ -209,4 +259,10 @@ test("codec uses queryable single-letter tags", async () => {
 
 async function tick() {
   await new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+function createDocWithText(value) {
+  const doc = new Y.Doc();
+  doc.getText("body").insert(0, value);
+  return doc;
 }
